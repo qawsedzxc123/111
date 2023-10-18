@@ -1,0 +1,94 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Задання розміру масиву
+        int N = 10; // Замініть на бажаний розмір масиву
+
+        // Ініціалізація та введення масиву
+        int[] array = new int[N];
+        Console.WriteLine("Введіть {0} цілих чисел для масиву:", N);
+        for (int i = 0; i < N; i++)
+        {
+            array[i] = Convert.ToInt32(Console.ReadLine());
+        }
+
+        // Завдання 1.1: Знайти мінімальний за модулем елемент масиву
+        int minAbsoluteValue = FindMinAbsoluteValue(array);
+        Console.WriteLine("Мінімальний за модулем елемент масиву: {0}", minAbsoluteValue);
+
+        // Завдання 1.2: Знайти суму модулів елементів, розташованих після першого елемента, рівного нулю
+        int sumAfterZero = SumOfModsAfterZero(array);
+        Console.WriteLine("Сума модулів елементів після першого нульового елемента: {0}", sumAfterZero);
+
+        // Завдання 1.3: Перетворити масив згідно вказаних правил
+        TransformArray(array);
+
+        // Виведення зміненого масиву
+        Console.WriteLine("Змінений масив:");
+        for (int i = 0; i < N; i++)
+        {
+            Console.Write(array[i] + " ");
+        }
+    }
+
+    static int FindMinAbsoluteValue(int[] arr)
+    {
+        int minAbsoluteValue = Math.Abs(arr[0]);
+
+        for (int i = 1; i < arr.Length; i++)
+        {
+            int absoluteValue = Math.Abs(arr[i]);
+            if (absoluteValue < minAbsoluteValue)
+            {
+                minAbsoluteValue = absoluteValue;
+            }
+        }
+
+        return minAbsoluteValue;
+    }
+
+    static int SumOfModsAfterZero(int[] arr)
+    {
+        int sum = 0;
+        bool foundZero = false;
+
+        foreach (int num in arr)
+        {
+            if (foundZero)
+            {
+                sum += Math.Abs(num);
+            }
+
+            if (num == 0)
+            {
+                foundZero = true;
+            }
+        }
+
+        return sum;
+    }
+
+    static void TransformArray(int[] arr)
+    {
+        int length = arr.Length;
+        int[] tempArray = new int[length];
+        int index = 0;
+
+        for (int i = 0; i < length; i += 2)
+        {
+            tempArray[index] = arr[i];
+            index++;
+        }
+
+        for (int i = 1; i < length; i += 2)
+        {
+            tempArray[index] = arr[i];
+            index++;
+        }
+
+        Array.Copy(tempArray, arr, length);
+    }
+}
