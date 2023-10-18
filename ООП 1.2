@@ -1,0 +1,31 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Введення значення n
+        Console.Write("Введіть натуральне число n: ");
+        int n = Convert.ToInt32(Console.ReadLine());
+
+        // Виведення результатів
+        Console.WriteLine($"Натуральні числа q, такі, що n ділиться на q^2 та не ділиться на q^3:");
+
+        FindNumbers(n);
+
+        // Затримка консолі перед завершенням
+        Console.ReadLine();
+    }
+
+    static void FindNumbers(int n)
+    {
+        for (int q = 1; q <= n; q++)
+        {
+            // Перевірка умов
+            if (n % (q * q) == 0 && n % (q * q * q) != 0)
+            {
+                Console.WriteLine(q);
+            }
+        }
+    }
+}
