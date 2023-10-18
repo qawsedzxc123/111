@@ -1,0 +1,35 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("C:\\Users\\Admin\\Desktop\\lab1\\lab1\\Crime_Data_from_2020_to_Present.csv")
+plt.style.use('ggplot')
+
+def task1():
+    df_результат1 = df['Vict Descent'].value_counts()
+    print(df_результат1)
+
+def task2():
+    df_результат2 = df['Vict Sex'].value_counts()
+    print(df_результат2)
+
+def task3():
+    df_результат3 = df[['Crm Cd Desc', 'Vict Age']].value_counts()
+    df_результат3.plot(kind='line', figsize=(15, 5), fontsize=5)
+    plt.show()
+    print(df_результат3)
+
+def task4():
+    df_результат4 = df[df['Vict Age'] > 0][['Vict Sex', 'Vict Age']].value_counts()
+    df_результат4.plot(kind='hist')
+    plt.show()
+    print(df_результат4)
+
+def task5():
+    df_результат5 = df[(df['Vict Sex'] == 'M') & (df['Vict Age'] > 0)][['Vict Sex', 'Vict Age']].value_counts()
+    print(df_результат5)
+
+task1()
+task2()
+task3()
+task4()
+task5()
