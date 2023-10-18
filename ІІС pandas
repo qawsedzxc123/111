@@ -1,0 +1,16 @@
+import pandas as pd
+
+# Програма для обробки та візуалізації даних з CSV-файлу
+def pandas_complex_example(file_path):
+    data = pd.read_csv(file_path)
+
+    # Групування даних за певною колонкою та виведення середніх значень
+    grouped_data = data.groupby('Category')['Value'].mean()
+    print("Average Values by Category:\n", grouped_data)
+
+    # Візуалізація даних (приклад: гістограма)
+    data['Value'].plot(kind='hist', title='Distribution of Values')
+    plt.show()
+
+# Виклик функції з прикладом файлу CSV
+pandas_complex_example("your_csv_file.csv")
