@@ -1,0 +1,60 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        // Введення текстового рядка
+        Console.WriteLine("Введіть текстовий рядок:");
+        string inputText = Console.ReadLine();
+
+        // Завдання 3.1: Підрахунок кількості слів, які починаються з голосної літери
+        int vowelStartCount = CountWordsStartingWithVowel(inputText);
+        Console.WriteLine("Кількість слів, що починаються з голосної літери: {0}", vowelStartCount);
+
+        // Завдання 3.2: Виведення слів з непарною кількістю приголосних літер
+        Console.WriteLine("Слова з непарною кількістю приголосних літер:");
+        DisplayWordsWithOddConsonants(inputText);
+
+        // Завдання 3.3: Видалення чисел з тексту
+        string textWithoutNumbers = RemoveNumbers(inputText);
+        Console.WriteLine("Текст без чисел:\n{0}", textWithoutNumbers);
+    }
+
+    static int CountWordsStartingWithVowel(string text)
+    {
+        string[] words = text.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
+        char[] vowels = { 'a', 'e', 'i', 'o', 'u' };
+        int count = 0;
+
+        foreach (string word in words)
+        {
+            if (word.Length > 0 && vowels.Contains(char.ToLower(word[0])))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    static void DisplayWordsWithOddConsonants(string text)
+    {
+        string[] words = text.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string word in words)
+        {
+            int consonantCount = word.Count(char.IsConsonant);
+            if (consonantCount % 2 != 0)
+            {
+                Console.WriteLine(word);
+            }
+        }
+    }
+
+    static string RemoveNumbers(string text)
+    {
+        return new string(text.Where(c => !char.IsDigit(c)).ToArray());
+    }
+}
