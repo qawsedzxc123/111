@@ -1,0 +1,74 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Задання розмірів матриці
+        int rows = 3; // Замініть на бажану кількість рядків
+        int columns = 4; // Замініть на бажану кількість стовпців
+
+        // Ініціалізація та введення матриці
+        int[,] matrix = new int[rows, columns];
+        Console.WriteLine("Введіть елементи матриці {0}x{1}:", rows, columns);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                matrix[i, j] = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+
+        // Вибір режиму (вправо або вниз)
+        Console.WriteLine("Виберіть режим зсуву (1 - вправо, 2 - вниз):");
+        int shiftMode = Convert.ToInt32(Console.ReadLine());
+
+        // Кількість позицій для зсуву
+        Console.WriteLine("Введіть кількість позицій для зсуву:");
+        int shiftPositions = Convert.ToInt32(Console.ReadLine());
+
+        // Виклик функції для циклічного зсуву
+        ShiftMatrix(matrix, shiftMode, shiftPositions);
+
+        // Виведення зміненої матриці
+        Console.WriteLine("Змінена матриця:");
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                Console.Write(matrix[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    static void ShiftMatrix(int[,] mat, int mode, int positions)
+    {
+        int rows = mat.GetLength(0);
+        int columns = mat.GetLength(1);
+        int[,] tempMatrix = new int[rows, columns];
+
+        if (mode == 1) // Зсув вправо
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    tempMatrix[i, (j + positions) % columns] = mat[i, j];
+                }
+            }
+        }
+        else if (mode == 2) // Зсув вниз
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    tempMatrix[(i + positions) % rows, j] = mat[i, j];
+                }
+            }
+        }
+
+        Array.Copy(tempMatrix, mat, rows * columns);
+    }
+}
