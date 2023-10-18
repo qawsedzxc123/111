@@ -1,0 +1,29 @@
+import ray
+import time
+
+# Ініціалізація Ray
+ray.init()
+
+# Програма для паралельної обробки великого списку даних
+@ray.remote
+def process_data(data_chunk):
+    # Симуляція обробки даних
+    time.sleep(1)
+    return [x * 2 for x in data_chunk]
+
+def ray_complex_example(big_data):
+    # Розділити великий список на менші частини
+    data_chunks = [big_data[i:i + 10] for i in range(0, len(big_data), 10)]
+
+    # Запустити обробку паралельно
+    results = ray.get([process_data.remote(chunk) for chunk in data_chunks])
+
+    # Об'єднати результати
+    final_result = [item for sublist in results for item in sublist]
+    print("Processed Data:", final_result)
+
+# Виклик функції з великим списком даних
+ray_complex_example(list(range(100)))
+
+# Зупинка Ray
+ray.shutdown()
