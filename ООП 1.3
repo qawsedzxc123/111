@@ -1,0 +1,34 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Введення двох рядків від користувача
+        Console.Write("Введіть перший рядок: ");
+        string str1 = Console.ReadLine();
+
+        Console.Write("Введіть другий рядок: ");
+        string str2 = Console.ReadLine();
+
+        // Виклик функції для вилучення символів
+        string result = RemoveCharacters(str1, str2);
+
+        // Виведення результату
+        Console.WriteLine($"Результат: {result}");
+
+        // Затримка консолі перед завершенням
+        Console.ReadLine();
+    }
+
+    static string RemoveCharacters(string str1, string str2)
+    {
+        // Вилучення кожного символу, що належить другому рядку
+        foreach (char c in str2)
+        {
+            str1 = str1.Replace(c.ToString(), string.Empty);
+        }
+
+        return str1;
+    }
+}
