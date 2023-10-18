@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Person
+{
+    public string Name { get; set; }
+    public string Gender { get; set; }
+    public int Age { get; set; }
+
+    // Додаткові властивості та методи можуть бути додані за необхідності
+}
+
+class DatingAgency
+{
+    private List<Person> database = new List<Person>();
+    private List<Person> archive = new List<Person>();
+
+    public void RegisterPerson(Person person)
+    {
+        database.Add(person);
+    }
+
+    public List<Person> FindMatches(string gender, int age)
+    {
+        return database.Where(p => p.Gender == gender && Math.Abs(p.Age - age) <= 5).ToList();
+    }
+
+    public void MatchAndArrangeMeeting(Person client, Person match)
+    {
+        Console.WriteLine("Знайдено відповідну кандидатуру: {0}", match.Name);
+        // Логіка організації зустрічі
+    }
+
+    public void ArchivePerson(Person person)
+    {
+        archive.Add(person);
+        database.Remove(person);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        DatingAgency agency = new DatingAgency();
+
+        // Сценарій реєстрації та підбору кандидатури
+        Person client = new Person { Name = "John", Gender = "Male", Age = 30 };
+        agency.RegisterPerson(client);
+
+        Console.WriteLine("Введіть ваші критерії для пошуку кандидата:");
+        Console.Write("Гендер (Male/Female): ");
+        string gender = Console.ReadLine();
+        Console.Write("Вік: ");
+        int age = Convert.ToInt32(Console.ReadLine());
+
+        List<Person> matches = agency.FindMatches(gender, age);
+
+        if (matches.Count > 0)
+        {
+            Console.WriteLine("Знайдено {0} відповідних кандидатів:", matches.Count);
+            foreach (Person match in matches)
+            {
+                Console.WriteLine("{0}, {1}, {2} роки", match.Name, match.Gender, match.Age);
+            }
+
+            Console.WriteLine("Оберіть кандидата для зустрічі (введіть номер):");
+            int selectedMatchIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+            if (selectedMatchIndex >= 0 && selectedMatchIndex < matches.Count)
+            {
+                Person selectedMatch = matches[selectedMatchIndex];
+                agency.MatchAndArrangeMeeting(client, selectedMatch);
+            }
+            else
+            {
+                Console.WriteLine("Некоректний вибір кандидата.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("На жаль, не знайдено відповідних кандидатів.");
+        }
+
+        // Сценарій архівації
+        Console.WriteLine("Чи бажаєте архівувати ваш профіль? (Y/N)");
+        string archiveChoice = Console.ReadLine();
+        if (archiveChoice.ToUpper() == "Y")
+        {
+            agency.ArchivePerson(client);
+            Console.WriteLine("Ваш профіль архівовано.");
+        }
+    }
+}
