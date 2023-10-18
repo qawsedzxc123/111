@@ -1,0 +1,39 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Введення значень x і z
+        Console.Write("Введіть значення x: ");
+        double x = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Введіть значення z: ");
+        double z = Convert.ToDouble(Console.ReadLine());
+
+        // Обчислення значення функції y
+        double y = CalculateFunction(x, z);
+
+        // Виведення результату
+        Console.WriteLine($"Значення функції y для x={x} та z={z} дорівнює {y}");
+
+        // Затримка консолі перед завершенням
+        Console.ReadLine();
+    }
+
+    static double CalculateFunction(double x, double z)
+    {
+        // Обчислення значення функції y
+        double numerator = x + Math.Exp(z - 1);
+        double denominator = 1 - x * x * (x - z);
+
+        // Перевірка ділення на нуль
+        if (denominator == 0)
+        {
+            Console.WriteLine("Увага: Ділення на нуль! Значення функції не визначено.");
+            return double.NaN; // Повертає NaN (Not a Number) у випадку ділення на нуль
+        }
+
+        return numerator / denominator;
+    }
+}
