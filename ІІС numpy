@@ -1,0 +1,18 @@
+import numpy as np
+
+# Програма для лінійної регресії з використанням NumPy
+def numpy_complex_example():
+    # Згенерувати випадкові дані
+    X = 2 * np.random.rand(100, 1)
+    y = 4 + 3 * X + np.random.randn(100, 1)
+
+    # Додати стовбець одиниць до X для зручності
+    X_b = np.c_[np.ones((100, 1)), X]
+
+    # Обчислення параметрів лінійної регресії
+    theta_best = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y)
+
+    print("Linear Regression Parameters:", theta_best)
+
+# Виклик функції
+numpy_complex_example()
