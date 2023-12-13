@@ -1,0 +1,235 @@
+using System;
+using System.Collections;
+
+public interface INameAndCopy
+{
+    string Name { get; set; }
+    object DeepCopy();
+}
+
+public class Person : INameAndCopy
+{
+    // Existing Person class implementation
+
+    public override bool Equals(object obj)
+    {
+        // Implementation for Equals method
+    }
+
+    public override int GetHashCode()
+    {
+        // Implementation for GetHashCode method
+    }
+
+    public virtual object DeepCopy()
+    {
+        // Implementation for DeepCopy method
+    }
+}
+
+public class Statistics : INameAndCopy
+{
+    // Existing Statistics class implementation
+
+    public string Name { get; set; }
+
+    public object DeepCopy()
+    {
+        // Implementation for DeepCopy method
+    }
+}
+
+public class Match : INameAndCopy
+{
+    // Existing Match class implementation
+
+    public string Name { get; set; }
+
+    public object DeepCopy()
+    {
+        // Implementation for DeepCopy method
+    }
+}
+
+public class TimeFrame : INameAndCopy
+{
+    // Existing TimeFrame class implementation
+
+    public string Name { get; set; }
+
+    public object DeepCopy()
+    {
+        // Implementation for DeepCopy method
+    }
+}
+
+public class Team2 : INameAndCopy
+{
+    private string teamName;
+    private int registrationNumber;
+
+    public Team2(string teamName, int registrationNumber)
+    {
+        this.teamName = teamName;
+        RegistrationNumber = registrationNumber;
+    }
+
+    public Team2() : this("Default Team", 0) { }
+
+    public string TeamName
+    {
+        get { return teamName; }
+        set { teamName = value; }
+    }
+
+    public int RegistrationNumber
+    {
+        get { return registrationNumber; }
+        set
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException("RegistrationNumber must be greater than zero.");
+            }
+            registrationNumber = value;
+        }
+    }
+
+    public virtual object DeepCopy()
+    {
+        // Implementation for DeepCopy method
+    }
+
+    public override bool Equals(object obj)
+    {
+        // Implementation for Equals method
+    }
+
+    public override int GetHashCode()
+    {
+        // Implementation for GetHashCode method
+    }
+
+    public override string ToString()
+    {
+        // Implementation for ToString method
+    }
+}
+
+public class FootballPlayer : Team2, INameAndCopy, IEnumerable
+{
+    private TimeFrame seasonDuration;
+    private ArrayList teamMembers;
+    private ArrayList matches;
+
+    public FootballPlayer(string teamName, string teamCountry, int registrationNumber, TimeFrame seasonDuration)
+        : base(teamName, registrationNumber)
+    {
+        this.seasonDuration = seasonDuration;
+        teamMembers = new ArrayList();
+        matches = new ArrayList();
+    }
+
+    public FootballPlayer() : this("Default Team", "Default Country", 0, new TimeFrame()) { }
+
+    public ArrayList Matches
+    {
+        get { return matches; }
+        set { matches = value; }
+    }
+
+    public Statistics LatestMatch
+    {
+        get
+        {
+            if (matches.Count > 0)
+            {
+                // Logic to find the match with the latest date
+                return matches[matches.Count - 1] as Statistics;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    public void AddMatch(params Match[] newMatches)
+    {
+        // Logic to add new matches to the matches array
+        matches.AddRange(newMatches);
+    }
+
+    public override string ToString()
+    {
+        // Implementation for ToString method
+    }
+
+    public string ToShortString()
+    {
+        // Implementation for ToShortString method
+    }
+
+    public override object DeepCopy()
+    {
+        // Implementation for DeepCopy method
+    }
+
+    public ArrayList TeamMembers
+    {
+        get { return teamMembers; }
+        set { teamMembers = value; }
+    }
+
+    public void AddMembers(params Person[] persons)
+    {
+        // Logic to add new members to the teamMembers array
+        teamMembers.AddRange(persons);
+    }
+
+    public Team2 Team
+    {
+        get
+        {
+            // Logic to create a Team2 object with data matching the base class
+            return new Team2(TeamName, RegistrationNumber);
+        }
+        set
+        {
+            // Logic to set the values of the base class fields from the provided Team2 object
+            TeamName = value.TeamName;
+            RegistrationNumber = value.RegistrationNumber;
+        }
+    }
+
+    public override IEnumerator GetEnumerator()
+    {
+        foreach (Person member in teamMembers)
+        {
+            if (member != null && !matches.Contains(member))
+            {
+                yield return member;
+            }
+        }
+    }
+
+    public IEnumerator GetEnumerator(int lastYears)
+    {
+        DateTime lastYearDate = DateTime.Now.AddYears(-lastYears);
+        foreach (Match match in matches)
+        {
+            if (match.Date > lastYearDate)
+            {
+                yield return match;
+            }
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Implementation of the specified tasks in the Main method
+    }
+}
