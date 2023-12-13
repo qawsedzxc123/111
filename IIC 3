@@ -1,0 +1,95 @@
+import numpy as np
+
+# Створення лабіринту
+maze = np.array([
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0]
+])
+
+# Визначення стартової та фінальної позицій
+start_state = (0, 0)
+goal_state = (4, 4)
+
+# Ініціалізація Q-таблиці
+num_states = maze.size
+num_actions = 4  # Вверх, вниз, вліво, вправо
+q_table = np.zeros((num_states, num_actions))
+
+# Визначення параметрів навчання
+alpha = 0.1  # Коефіцієнт навчання
+gamma = 0.9  # Коефіцієнт дисконтування
+epsilon = 0.1  # Ймовірність випадкової дії (для ε-жадібного вибору)
+
+# Функція для отримання дій, доступних з поточного стану
+def get_available_actions(state):
+    row, col = state
+    actions = []
+    if row > 0 and maze[row - 1, col] != 1:
+        actions.append(0)  # Вгору
+    if row < maze.shape[0] - 1 and maze[row + 1, col] != 1:
+        actions.append(1)  # Вниз
+    if col > 0 and maze[row, col - 1] != 1:
+        actions.append(2)  # Вліво
+    if col < maze.shape[1] - 1 and maze[row, col + 1] != 1:
+        actions.append(3)  # Вправо
+    return actions
+
+# Навчання агента
+num_episodes = 1000
+
+for episode in range(num_episodes):
+    state = start_state
+    while state != goal_state:
+        # Вибір дії згідно політики ε-жадібного вибору
+        if np.random.rand() < epsilon:
+            action = np.random.choice(get_available_actions(state))
+        else:
+            action = np.argmax(q_table[state[0] * maze.shape[1] + state[1]])
+
+        # Виконання дії та отримання винагороди та нового стану
+        next_row, next_col = state
+        if action == 0:
+            next_row -= 1
+        elif action == 1:
+            next_row += 1
+        elif action == 2:
+            next_col -= 1
+        elif action == 3:
+            next_col += 1
+
+        # Обмеження на випадок виходу за межі лабіринту
+        next_row = max(0, min(next_row, maze.shape[0] - 1))
+        next_col = max(0, min(next_col, maze.shape[1] - 1))
+
+        # Винагорода за досягнення нового стану
+        reward = -1 if (next_row, next_col) != goal_state else 0
+
+        # Оновлення Q-таблиці за допомогою формули Q-навчання
+        q_table[state[0] * maze.shape[1] + state[1], action] += alpha * (reward + gamma * np.max(q_table[next_row * maze.shape[1] + next_col]) - q_table[state[0] * maze.shape[1] + state[1], action])
+
+        # Оновлення поточного стану
+        state = (next_row, next_col)
+
+# Виведення Q-таблиці
+print("Q-таблиця:")
+print(q_table)
+
+# Тестування агента
+state = start_state
+while state != goal_state:
+    action = np.argmax(q_table[state[0] * maze.shape[1] + state[1]])
+    print(f"Зробити дію {action}")
+    next_row, next_col = state
+    if action == 0:
+        next_row -= 1
+    elif action == 1:
+        next_row += 1
+    elif action == 2:
+        next_col -= 1
+    elif action == 3:
+        next_col += 1
+    state = (next_row, next_col)
+print("Досягнуто фінальну позицію!")
