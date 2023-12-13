@@ -1,0 +1,192 @@
+using System;
+
+public enum FootballLeague
+{
+    League2,
+    League1,
+    PremierLeague
+}
+
+public class Team
+{
+    public string TeamName { get; set; }
+    public double Budget { get; set; }
+    public DateTime SeasonStartDate { get; set; }
+
+    public Team(string teamName, double budget, DateTime seasonStartDate)
+    {
+        TeamName = teamName;
+        Budget = budget;
+        SeasonStartDate = seasonStartDate;
+    }
+
+    public Team()
+    {
+        TeamName = "Default Team";
+        Budget = 0.0;
+        SeasonStartDate = DateTime.Now;
+    }
+
+    public override string ToString()
+    {
+        return $"Team: {TeamName}, Budget: {Budget}, Season Start Date: {SeasonStartDate}";
+    }
+}
+
+public class Statistics
+{
+    // You need to define the properties and methods of the Statistics class based on your requirements
+}
+
+public class Match
+{
+    public DateTime Date { get; set; }
+
+    public Match(DateTime date)
+    {
+        Date = date;
+    }
+
+    // Add other properties and methods as needed
+}
+
+public class TimeFrame
+{
+    public bool Equals(TimeFrame other)
+    {
+        // Implement logic for comparing TimeFrame instances
+        return /* Your comparison logic */;
+    }
+
+    // You might need to add other properties and methods based on your requirements
+}
+
+public class FootballPlayer
+{
+    private string fullName;
+    private string citizenship;
+    private int registrationNumber;
+    private TimeFrame seasonDuration;
+    private Statistics[] matches;
+
+    public FootballPlayer(string fullName, string citizenship, int registrationNumber, TimeFrame seasonDuration)
+    {
+        this.fullName = fullName;
+        this.citizenship = citizenship;
+        this.registrationNumber = registrationNumber;
+        this.seasonDuration = seasonDuration;
+        this.matches = new Statistics[0];
+    }
+
+    public FootballPlayer()
+    {
+        this.fullName = "Default Player";
+        this.citizenship = "Default Country";
+        this.registrationNumber = 0;
+        this.seasonDuration = new TimeFrame(); // Assuming TimeFrame has a default constructor
+        this.matches = new Statistics[0];
+    }
+
+    public string FullName
+    {
+        get { return fullName; }
+        set { fullName = value; }
+    }
+
+    public string Citizenship
+    {
+        get { return citizenship; }
+        set { citizenship = value; }
+    }
+
+    public int RegistrationNumber
+    {
+        get { return registrationNumber; }
+        set { registrationNumber = value; }
+    }
+
+    public TimeFrame SeasonDuration
+    {
+        get { return seasonDuration; }
+        set { seasonDuration = value; }
+    }
+
+    public Statistics[] Matches
+    {
+        get { return matches; }
+        set { matches = value; }
+    }
+
+    public Statistics LatestMatch
+    {
+        get
+        {
+            if (matches.Length > 0)
+            {
+                // Logic to find the match with the latest date
+                return matches[matches.Length - 1];
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    public bool this[TimeFrame timeFrame]
+    {
+        get
+        {
+            // Logic to check if the timeFrame matches the seasonDuration
+            return seasonDuration.Equals(timeFrame);
+        }
+    }
+
+    public void AddMatch(params Match[] newMatches)
+    {
+        // Logic to add new matches to the matches array
+        // You need to implement this based on your requirements
+    }
+
+    public override string ToString()
+    {
+        // Implement ToString to display all fields, including the list of matches
+        return $"Player: {FullName}, Citizenship: {Citizenship}, Registration Number: {RegistrationNumber}, Season Duration: {SeasonDuration}";
+    }
+
+    public virtual string ToShortString()
+    {
+        // Implement ToShortString to display only basic player information without matches
+        return $"Player: {FullName}, Citizenship: {Citizenship}, Registration Number: {RegistrationNumber}, Season Duration: {SeasonDuration}";
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // 1. Create an object of type FootballPlayer, convert data to text using the ToShortString() method, and display the data.
+        FootballPlayer player = new FootballPlayer("John Doe", "England", 12345, new TimeFrame());
+        Console.WriteLine(player.ToShortString());
+
+        // 2. Display the values of the indexer for the values of the TimeFrame enum.
+        Console.WriteLine($"League 2: {player[TimeFrame.League2]}, League 1: {player[TimeFrame.League1]}, Premier League: {player[TimeFrame.PremierLeague]}");
+
+        // 3. Assign values to all properties defined in the FootballPlayer type, convert data to text using the ToString() method, and display the data.
+        player.FullName = "New Player";
+        player.Citizenship = "New Country";
+        player.RegistrationNumber = 54321;
+        player.SeasonDuration = new TimeFrame();
+        Console.WriteLine(player.ToString());
+
+        // 4. Add elements to the list of matches using the AddMatch() method and display the data of the FootballPlayer object.
+        player.AddMatch(new Match(/* Initialize match parameters */));
+        Console.WriteLine(player.ToString());
+
+        // 5. Display the value of the property that returns a reference to the match with the latest exit date.
+        Console.WriteLine($"Latest Match: {player.LatestMatch}");
+
+        // 6. Compare the execution time of operations with elements of one-dimensional, two-dimensional rectangular, and two-dimensional jagged arrays with the same number of elements of the Statistics type.
+        // You can implement this based on your requirements.
+    }
+}
